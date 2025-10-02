@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Telegram</title>
+  </head>
+  <body>
+    <script>
+      async function getRandomUrl() {
+        try {
+          let params = new URLSearchParams(window.location.search);
+          let file = params.get("file") || "urls.txt";
+          let response = await fetch(file);
+          let data = await response.text();
+          let links = data
+            .split("\n")
+            .map((link) => link.trim())
+            .filter((link) => link);
+
+          if (links.length > 0) {
+            return links[Math.floor(Math.random() * links.length)];
+          }
+        } catch (error) {
+          console.error("Lỗi khi tải danh sách URL:", error);
+        }
+        return null; // Trả về null nếu không có link nào hợp lệ
+      }
+      // Gọi hàm và chuyển hướng nếu có URL
+      getRandomUrl().then((url) => {
+        if (url) window.location.href = url;
+      });
+    </script>
+  </body>
+</html>
